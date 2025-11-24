@@ -3,6 +3,11 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
     private const int SIZE = 8;
+    public int Size
+    {
+        get => SIZE;
+    }
+
     [SerializeField] private Cell cellPrefab;
     [SerializeField] private Transform cellsTransform;
     private readonly Cell[,] cells = new Cell[SIZE, SIZE];

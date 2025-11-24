@@ -2,15 +2,9 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private const int SIZE = 5;// Size of the block in cells (5x5)
+    public int Size
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        get => SIZE;
     }
 }
