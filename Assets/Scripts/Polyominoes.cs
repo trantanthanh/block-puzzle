@@ -11,6 +11,33 @@ public static class Polyominoes
         }
     };
 
+    static Polyominoes()
+    {
+        foreach (var polyomino in polyominoes)
+        {
+            ReverseRows(polyomino);
+        }
+    }
+
     public static int[,] Get(int index) => polyominoes[index];
     public static int Length => polyominoes.Length;
+
+    private static void ReverseRows(int[,] polyomino)
+    {
+        int polyominoRows = polyomino.GetLength(0);
+        int polyominoColumns = polyomino.GetLength(1);
+
+        for (int rows = 0; rows < polyominoRows / 2; rows++)
+        {
+            int topRow = rows;
+            int bottomRow = polyominoRows - 1 - rows;
+
+            for (int columns = 0; columns < polyominoColumns; columns++)
+            {
+                int temp = polyomino[topRow, columns];
+                polyomino[topRow, columns] = polyomino[bottomRow, columns];
+                polyomino[bottomRow, columns] = temp;
+            }
+        }
+    }
 }
