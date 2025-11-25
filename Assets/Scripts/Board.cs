@@ -19,7 +19,7 @@ public class Board : MonoBehaviour
             for (int column = 0; column < SIZE; column++)
             {
                 cells[row, column] = Instantiate(cellPrefab, cellsTransform);
-                cells[row, column].transform.position = new Vector3(row, column, 0);// Set cell position, pixels to units (1 unit = 1 cell, 1 unit = 100 pixel, 1 cell w = h = 100)
+                cells[row, column].transform.position = new Vector3(column ,row, 0);// Set cell position, pixels to units (1 unit = 1 cell, 1 unit = 100 pixel, 1 cell w = h = 100)
             }
         }
     }

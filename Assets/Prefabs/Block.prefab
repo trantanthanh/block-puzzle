@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152ff77b99f825a4e9110c701cc9932e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Block
+  cellPrefab: {fileID: 2510950775250347912, guid: 417fff8da7c41ad43bbec0360338c7db, type: 3}
