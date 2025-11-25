@@ -34,9 +34,7 @@ public static class Polyominoes
 
             for (int columns = 0; columns < polyominoColumns; columns++)
             {
-                int temp = polyomino[topRow, columns];
-                polyomino[topRow, columns] = polyomino[bottomRow, columns];
-                polyomino[bottomRow, columns] = temp;
+                (polyomino[bottomRow, columns], polyomino[topRow, columns]) = (polyomino[topRow, columns], polyomino[bottomRow, columns]);
             }
         }
     }
