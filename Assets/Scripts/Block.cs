@@ -30,13 +30,15 @@ public class Block : MonoBehaviour
         int polyominoRows = polyomino.GetLength(0);
         int polyominoColumns = polyomino.GetLength(1);
 
+        Vector2 center = new Vector2(polyominoColumns * 0.5f, polyominoRows * 0.5f);
+
         for (int row = 0; row < polyominoRows; ++row)
         {
             for (int column = 0; column < polyominoColumns; ++column)
             {
                 if (polyomino[row, column] > 0)
                 {
-                    cells[row, column].transform.localPosition = new Vector3(column, row, 0.0f);
+                    cells[row, column].transform.localPosition = new Vector3(column - center.x + 0.5f, row - center.y + 0.5f, 0.0f);
                     cells[row, column].Normal();
                 }
             }
