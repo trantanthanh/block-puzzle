@@ -55,4 +55,18 @@ public class Block : MonoBehaviour
             }
         }
     }
+
+    void OnMouseDown()
+    {
+        Debug.Log("Block clicked!");
+    }
+
+    void OnMouseDrag()
+    {
+        Debug.Log("Block dragged!");
+    }
+    void OnMouseUp()
+    {
+        Debug.Log("Block released!");
+    }
 }
