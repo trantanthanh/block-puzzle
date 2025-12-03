@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Manages a block of cells that can display different polyomino shapes (attach to block prefab)
 public class Block : MonoBehaviour
 {
     private const int SIZE = 5;// Size of the block in cells (5x5)

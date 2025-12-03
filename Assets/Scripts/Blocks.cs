@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+// Manages multiple blocks and positions them on the board (attach to Blocks GameObject)
 public class Blocks : MonoBehaviour
 {
     [SerializeField] private Block[] blocks;

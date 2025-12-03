@@ -1,4 +1,4 @@
-
+//Shape of block pieces to drag
 public static class Polyominoes
 {
     private static readonly int[][,] polyominoes = new int[][,]

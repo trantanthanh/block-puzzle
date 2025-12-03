@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//use for managing cell states (normal, highlight, hover, hide)(attach to cell prefab)
 public class Cell : MonoBehaviour
 {
     [SerializeField] private Sprite spriteNormal;
