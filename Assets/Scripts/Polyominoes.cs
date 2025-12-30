@@ -8,8 +8,8 @@ public static class Polyominoes
            {0, 0, 1},
            {0, 0, 1},
            {1, 1, 1}
-        }
-    };
+        }//L shape
+    };//array of 2d arrays representing polyomino shapes
 
     static Polyominoes()
     {

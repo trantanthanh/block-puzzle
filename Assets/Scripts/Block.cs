@@ -7,6 +7,10 @@ public class Block : MonoBehaviour
     [SerializeField] private Cell cellPrefab;
 
     private readonly Cell[,] cells = new Cell[SIZE, SIZE];
+    private Vector3 previousMousePosition = Vector3.positiveInfinity;
+
+    private Vector3 position;//use to move while dragging
+    private Vector3 scale;//use to zoom while dragging
 
     public int Size
     {
@@ -22,14 +26,16 @@ public class Block : MonoBehaviour
                 cells[row, column] = Instantiate(cellPrefab, transform);
             }
         }
+        position = transform.localPosition;
+        scale = transform.localScale;
     }
 
     public void Show(int polyominoIndex)
     {
         this.Hide();
         int[,] polyomino = Polyominoes.Get(polyominoIndex);
-        int polyominoRows = polyomino.GetLength(0);
-        int polyominoColumns = polyomino.GetLength(1);
+        int polyominoRows = polyomino.GetLength(0);// number of rows in the polyomino
+        int polyominoColumns = polyomino.GetLength(1);// number of columns in the polyomino
 
         Vector2 center = new Vector2(polyominoColumns * 0.5f, polyominoRows * 0.5f);
 
@@ -60,14 +66,22 @@ public class Block : MonoBehaviour
     void OnMouseDown()
     {
         Debug.Log("Block clicked!");
+        previousMousePosition = Input.mousePosition;
+        transform.localPosition = position + new Vector3(0.0f, 2.0f, 0.0f);
     }
 
     void OnMouseDrag()
     {
-        Debug.Log("Block dragged!");
+        var currentMousePosition = Input.mousePosition;
+        if (previousMousePosition != currentMousePosition)
+        {
+            Debug.Log("Block dragged!");
+            previousMousePosition = currentMousePosition;
+        }
     }
     void OnMouseUp()
     {
         Debug.Log("Block released!");
+        previousMousePosition = Vector3.positiveInfinity;
     }
 }

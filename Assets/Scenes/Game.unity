@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 582989907}
   - component: {fileID: 582989909}
   m_Layer: 0
-  m_Name: Board
+  m_Name: Board - Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 1390333592}
   - component: {fileID: 1390333593}
   m_Layer: 0
-  m_Name: Background
+  m_Name: Cell background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -9,7 +9,7 @@ public class Blocks : MonoBehaviour
 
     private void Start()
     {
-        var blockWidth = (float)board.Size / blocks.Length;
+        var blockWidth = (float)board.Size / blocks.Length;// Calculate width allocated for each block
         var cellSize = (float)board.Size / (blocks[0].Size * blocks.Length + blocks.Length + 1);// Calculate cell size based on board size and number of blocks
         for (int i = 0; i < blocks.Length; i++)
         {

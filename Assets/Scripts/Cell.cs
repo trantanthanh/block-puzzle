@@ -28,6 +28,11 @@ public class Cell : MonoBehaviour
         spriteRenderer.color = Color.white;
     }
 
+    public void SetColor(Color color)
+    {
+        spriteRenderer.color = color;
+    }
+
     public void Hover()
     {
         gameObject.SetActive(true);
