@@ -9,8 +9,10 @@ public class Block : MonoBehaviour
     private readonly Cell[,] cells = new Cell[SIZE, SIZE];
     private Vector3 previousMousePosition = Vector3.positiveInfinity;
 
-    private Vector3 position;//use to move while dragging
-    private Vector3 scale;//use to zoom while dragging
+    private Vector3 originalPosition;//use to move while dragging
+    private Vector3 scale;//scale to fix width at bottom.
+    [Header("Config")]
+    [SerializeField] private Vector3 offset = new Vector3(0.0f, 2.0f, 0.0f);
 
     public int Size
     {
@@ -26,7 +28,7 @@ public class Block : MonoBehaviour
                 cells[row, column] = Instantiate(cellPrefab, transform);
             }
         }
-        position = transform.localPosition;
+        originalPosition = transform.localPosition;
         scale = transform.localScale;
     }
 
@@ -66,8 +68,9 @@ public class Block : MonoBehaviour
     void OnMouseDown()
     {
         Debug.Log("Block clicked!");
+        transform.localPosition = originalPosition + offset;
+        transform.localScale = Vector3.one;
         previousMousePosition = Input.mousePosition;
-        transform.localPosition = position + new Vector3(0.0f, 2.0f, 0.0f);
     }
 
     void OnMouseDrag()
@@ -82,6 +85,8 @@ public class Block : MonoBehaviour
     void OnMouseUp()
     {
         Debug.Log("Block released!");
+        transform.localPosition = originalPosition;
+        transform.localScale = scale;
         previousMousePosition = Vector3.positiveInfinity;
     }
 }
