@@ -9,14 +9,24 @@ public class Block : MonoBehaviour
     private readonly Cell[,] cells = new Cell[SIZE, SIZE];
     private Vector3 previousMousePosition = Vector3.positiveInfinity;
 
-    private Vector3 originalPosition;//use to move while dragging
+    private Vector3 originalPosition;//use to reset position on release
     private Vector3 scale;//scale to fix width at bottom.
+
+    private Vector3 inputPoint;//use to track input position
+    private const float inputPointMultiple = 1.4f;
+    private Vector3 previousMouseWorldPosition = Vector3.positiveInfinity;
+    private Camera mainCamera;
     [Header("Config")]
-    [SerializeField] private Vector3 offset = new Vector3(0.0f, 2.0f, 0.0f);
+    [SerializeField] private Vector3 inputOffset = new Vector3(0.0f, 2.0f, 0.0f);
 
     public int Size
     {
         get => SIZE;
+    }
+
+    private void Awake()
+    {
+        mainCamera = Camera.main;
     }
 
     public void Initialize()
@@ -68,7 +78,8 @@ public class Block : MonoBehaviour
     void OnMouseDown()
     {
         Debug.Log("Block clicked!");
-        transform.localPosition = originalPosition + offset;
+        inputPoint = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        transform.localPosition = originalPosition + inputOffset;
         transform.localScale = Vector3.one;
         previousMousePosition = Input.mousePosition;
     }
@@ -80,6 +91,8 @@ public class Block : MonoBehaviour
         {
             Debug.Log("Block dragged!");
             previousMousePosition = currentMousePosition;
+            var inputDelta = mainCamera.ScreenToWorldPoint(currentMousePosition) - inputPoint;
+            transform.localPosition = originalPosition + inputOffset + inputDelta * inputPointMultiple;
         }
     }
     void OnMouseUp()
