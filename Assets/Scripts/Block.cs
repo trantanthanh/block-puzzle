@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms.GameCenter;
 
 // Manages a block of cells that can display different polyomino shapes (attach to block prefab)
 public class Block : MonoBehaviour
@@ -14,8 +15,13 @@ public class Block : MonoBehaviour
 
     private Vector3 inputPoint;//use to track input position
     private const float inputPointMultiple = 1.4f;
-    private Vector3 previousMouseWorldPosition = Vector3.positiveInfinity;
+
     private Camera mainCamera;
+    private Vector3 previousMouseWorldPosition = Vector3.positiveInfinity;
+    private Vector2Int previousDragPoint;
+    private Vector2Int currentDragPoint;//use to caculate position on board
+    private Vector2 center;
+
     [Header("Config")]
     [SerializeField] private Vector3 inputOffset = new Vector3(0.0f, 2.0f, 0.0f);
 
@@ -82,6 +88,8 @@ public class Block : MonoBehaviour
         transform.localPosition = originalPosition + inputOffset;
         transform.localScale = Vector3.one;
         previousMousePosition = Input.mousePosition;
+        currentDragPoint = Vector2Int.RoundToInt((Vector2)transform.position - center);
+        Debug.Log($"Current Drag Point: {currentDragPoint}");
     }
 
     void OnMouseDrag()
@@ -93,6 +101,13 @@ public class Block : MonoBehaviour
             previousMousePosition = currentMousePosition;
             var inputDelta = mainCamera.ScreenToWorldPoint(currentMousePosition) - inputPoint;
             transform.localPosition = originalPosition + inputOffset + inputDelta * inputPointMultiple;
+
+            currentDragPoint = Vector2Int.RoundToInt((Vector2)transform.position - center);//update drag point
+            if (currentDragPoint != previousDragPoint)
+            {
+                Debug.Log($"Current Drag Point: {currentDragPoint}");
+                previousDragPoint = currentDragPoint;
+            }
         }
     }
     void OnMouseUp()
