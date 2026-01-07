@@ -6,6 +6,9 @@ public class Block : MonoBehaviour
 {
     private const int SIZE = 5;// Size of the block in cells (5x5)
     [SerializeField] private Cell cellPrefab;
+    [SerializeField] private Board board;
+
+    int polyominoIndex = 1;
 
     private readonly Cell[,] cells = new Cell[SIZE, SIZE];
     private Vector3 previousMousePosition = Vector3.positiveInfinity;
@@ -50,6 +53,7 @@ public class Block : MonoBehaviour
 
     public void Show(int polyominoIndex)
     {
+        this.polyominoIndex = polyominoIndex;
         this.Hide();
         int[,] polyomino = Polyominoes.Get(polyominoIndex);
         int polyominoRows = polyomino.GetLength(0);// number of rows in the polyomino
@@ -88,7 +92,10 @@ public class Block : MonoBehaviour
         transform.localPosition = originalPosition + inputOffset;
         transform.localScale = Vector3.one;
         previousMousePosition = Input.mousePosition;
+
         currentDragPoint = Vector2Int.RoundToInt((Vector2)transform.position - center);
+        previousDragPoint = currentDragPoint;
+        board.Hover(currentDragPoint, polyominoIndex);
         Debug.Log($"Current Drag Point: {currentDragPoint}");
     }
 
@@ -107,6 +114,7 @@ public class Block : MonoBehaviour
             {
                 Debug.Log($"Current Drag Point: {currentDragPoint}");
                 previousDragPoint = currentDragPoint;
+                board.Hover(currentDragPoint, polyominoIndex);
             }
         }
     }
