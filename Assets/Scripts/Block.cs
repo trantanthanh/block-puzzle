@@ -59,7 +59,7 @@ public class Block : MonoBehaviour
         int polyominoRows = polyomino.GetLength(0);// number of rows in the polyomino
         int polyominoColumns = polyomino.GetLength(1);// number of columns in the polyomino
 
-        Vector2 center = new Vector2(polyominoColumns * 0.5f, polyominoRows * 0.5f);
+        center = new Vector2(polyominoColumns * 0.5f, polyominoRows * 0.5f);
 
         for (int row = 0; row < polyominoRows; ++row)
         {
