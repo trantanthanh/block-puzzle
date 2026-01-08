@@ -12,8 +12,13 @@ public class Board : MonoBehaviour
     [SerializeField] private Cell cellPrefab;
     [SerializeField] private Transform cellsTransform;// Parent transform for cells
     private readonly Cell[,] cells = new Cell[SIZE, SIZE];// 2D array to hold cell references
-    private readonly int[,] data = new int[SIZE, SIZE];// 0 : Empty, 1 : Hover, 2 : Normal 
+    private readonly int[,] data = new int[SIZE, SIZE];// 0 : Empty, 1 : Hover, 2 : Normal
+
+    #region Manage Hover Points
     private readonly List<Vector2Int> hoverPoints = new();
+    private readonly List<int> fullLineColumns = new();
+    private readonly List<int> fullLineRows = new();
+    #endregion
 
     private void Start()
     {
@@ -120,5 +125,64 @@ public class Board : MonoBehaviour
             cells[hoverPoint.y, hoverPoint.x].Normal();
         }
         hoverPoints.Clear();
+        ClearFullLines();
+    }
+
+    private void ClearFullLines()
+    {
+        fullLineRows.Clear();
+        fullLineColumns.Clear();
+        // Check for full rows
+        for (int row = 0; row < SIZE; row++)
+        {
+            bool isFull = true;
+            for (int column = 0; column < SIZE; column++)
+            {
+                if (data[row, column] != 2)
+                {
+                    isFull = false;
+                    break;
+                }
+            }
+            if (isFull)
+            {
+                fullLineRows.Add(row);
+            }
+        }
+        // Check for full columns
+        for (int column = 0; column < SIZE; column++)
+        {
+            bool isFull = true;
+            for (int row = 0; row < SIZE; row++)
+            {
+                if (data[row, column] != 2)
+                {
+                    isFull = false;
+                    break;
+                }
+            }
+            if (isFull)
+            {
+                fullLineColumns.Add(column);
+            }
+        }
+        // Clear full rows
+        foreach (var row in fullLineRows)
+        {
+            for (int column = 0; column < SIZE; column++)
+            {
+                data[row, column] = 0;
+                cells[row, column].Hide();
+            }
+        }
+        // Clear full columns
+        foreach (var column in fullLineColumns)
+        {
+            for (int row = 0; row < SIZE; row++)
+            {
+                data[row, column] = 0;
+                cells[row, column].Hide();
+            }
+        }
     }
 }

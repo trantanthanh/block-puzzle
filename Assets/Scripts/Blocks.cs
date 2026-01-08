@@ -27,7 +27,7 @@ public class Blocks : MonoBehaviour
         for (int i = 0; i < blocks.Length; ++i)
         {
             blocks[i].gameObject.SetActive(true);
-            blocks[i].Show(0);
+            blocks[i].Show(1);
             blockCount++;
         }
     }
