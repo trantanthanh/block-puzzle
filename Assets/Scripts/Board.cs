@@ -104,20 +104,20 @@ public class Board : MonoBehaviour
     public bool Place(Vector2Int point, int polyominoIndex)
     {
         var polyomino = Polyominoes.Get(polyominoIndex);
-        int polyominoRows = polyomino.GetLength(0);
-        int polyominoColumns = polyomino.GetLength(1);
+        int polyominoRows = polyomino.GetLength(0);//dimensions of polyomino
+        int polyominoColumns = polyomino.GetLength(1);//dimensions of polyomino
 
         UnHover();
         GetHoverPoints(point, polyominoRows, polyominoColumns, polyomino);
         if (hoverPoints.Count > 0)
         {
-            Place();
+            Place(point, polyominoRows, polyominoColumns);
             return true;
         }
         return false;
     }
 
-    public void Place()
+    public void Place(Vector2Int point, int polyominoRows, int polyominoColumn)
     {
         foreach (var hoverPoint in hoverPoints)
         {
@@ -125,32 +125,21 @@ public class Board : MonoBehaviour
             cells[hoverPoint.y, hoverPoint.x].Normal();
         }
         hoverPoints.Clear();
+        ClearFullLines(point, polyominoRows, polyominoColumn);
+    }
+
+    private void ClearFullLines(Vector2Int point, int polyominoRows, int polyominoColumn)
+    {
+        FullLinesColumn(point.x, point.x + polyominoColumn);
+        FullLinesRow(point.y, point.y + polyominoRows);
+
         ClearFullLines();
     }
 
-    private void ClearFullLines()
+    private void FullLinesColumn(int fromColum, int toColumn)
     {
-        fullLineRows.Clear();
         fullLineColumns.Clear();
-        // Check for full rows
-        for (int row = 0; row < SIZE; row++)
-        {
-            bool isFull = true;
-            for (int column = 0; column < SIZE; column++)
-            {
-                if (data[row, column] != 2)
-                {
-                    isFull = false;
-                    break;
-                }
-            }
-            if (isFull)
-            {
-                fullLineRows.Add(row);
-            }
-        }
-        // Check for full columns
-        for (int column = 0; column < SIZE; column++)
+        for (int column = fromColum; column < toColumn; column++)
         {
             bool isFull = true;
             for (int row = 0; row < SIZE; row++)
@@ -166,7 +155,32 @@ public class Board : MonoBehaviour
                 fullLineColumns.Add(column);
             }
         }
-        // Clear full rows
+    }
+
+    private void FullLinesRow(int fromRow, int toRow)
+    {
+        fullLineRows.Clear();
+        for (int row = fromRow; row < toRow; row++)
+        {
+            bool isFull = true;
+            for (int column = 0; column < SIZE; column++)
+            {
+                if (data[row, column] != 2)
+                {
+                    isFull = false;
+                    break;
+                }
+            }
+            if (isFull)
+            {
+                fullLineRows.Add(row);
+            }
+        }
+    }
+
+    private void ClearFullLines()
+    {
+        //Clear full rows
         foreach (var row in fullLineRows)
         {
             for (int column = 0; column < SIZE; column++)
@@ -185,4 +199,62 @@ public class Board : MonoBehaviour
             }
         }
     }
+
+    //private void ClearFullLines()
+    //{
+    //    fullLineRows.Clear();
+    //    fullLineColumns.Clear();
+    //    // Check for full rows
+    //    for (int row = 0; row < SIZE; row++)
+    //    {
+    //        bool isFull = true;
+    //        for (int column = 0; column < SIZE; column++)
+    //        {
+    //            if (data[row, column] != 2)
+    //            {
+    //                isFull = false;
+    //                break;
+    //            }
+    //        }
+    //        if (isFull)
+    //        {
+    //            fullLineRows.Add(row);
+    //        }
+    //    }
+    //    // Check for full columns
+    //    for (int column = 0; column < SIZE; column++)
+    //    {
+    //        bool isFull = true;
+    //        for (int row = 0; row < SIZE; row++)
+    //        {
+    //            if (data[row, column] != 2)
+    //            {
+    //                isFull = false;
+    //                break;
+    //            }
+    //        }
+    //        if (isFull)
+    //        {
+    //            fullLineColumns.Add(column);
+    //        }
+    //    }
+    //    // Clear full rows
+    //    foreach (var row in fullLineRows)
+    //    {
+    //        for (int column = 0; column < SIZE; column++)
+    //        {
+    //            data[row, column] = 0;
+    //            cells[row, column].Hide();
+    //        }
+    //    }
+    //    // Clear full columns
+    //    foreach (var column in fullLineColumns)
+    //    {
+    //        for (int row = 0; row < SIZE; row++)
+    //        {
+    //            data[row, column] = 0;
+    //            cells[row, column].Hide();
+    //        }
+    //    }
+    //}
 }
