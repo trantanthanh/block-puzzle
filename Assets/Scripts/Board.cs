@@ -95,4 +95,30 @@ public class Board : MonoBehaviour
         }
         hoverPoints.Clear();
     }
+
+    public bool Place(Vector2Int point, int polyominoIndex)
+    {
+        var polyomino = Polyominoes.Get(polyominoIndex);
+        int polyominoRows = polyomino.GetLength(0);
+        int polyominoColumns = polyomino.GetLength(1);
+
+        UnHover();
+        GetHoverPoints(point, polyominoRows, polyominoColumns, polyomino);
+        if (hoverPoints.Count > 0)
+        {
+            Place();
+            return true;
+        }
+        return false;
+    }
+
+    public void Place()
+    {
+        foreach (var hoverPoint in hoverPoints)
+        {
+            data[hoverPoint.y, hoverPoint.x] = 2;// Mark as normal
+            cells[hoverPoint.y, hoverPoint.x].Normal();
+        }
+        hoverPoints.Clear();
+    }
 }

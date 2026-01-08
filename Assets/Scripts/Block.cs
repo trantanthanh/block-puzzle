@@ -121,8 +121,19 @@ public class Block : MonoBehaviour
     void OnMouseUp()
     {
         Debug.Log("Block released!");
-        transform.localPosition = originalPosition;
-        transform.localScale = scale;
         previousMousePosition = Vector3.positiveInfinity;
+
+        currentDragPoint = Vector2Int.RoundToInt((Vector2)transform.position - center);
+        if (board.Place(currentDragPoint, polyominoIndex))
+        {
+            Debug.Log("Block placed on board!");
+            Hide();
+        }
+        else
+        {
+            Debug.Log("Block placement failed, returning to original position.");
+            transform.localPosition = originalPosition;
+            transform.localScale = scale;
+        }
     }
 }
