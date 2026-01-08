@@ -223,6 +223,10 @@ PrefabInstance:
       propertyPath: board
       value: 
       objectReference: {fileID: 582989909}
+    - target: {fileID: 3262459945827898626, guid: 7584cc51528fa684ea861063874289ab, type: 3}
+      propertyPath: blocks
+      value: 
+      objectReference: {fileID: 1097308487}
     - target: {fileID: 4910241636444012569, guid: 7584cc51528fa684ea861063874289ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -606,6 +610,10 @@ PrefabInstance:
       propertyPath: board
       value: 
       objectReference: {fileID: 582989909}
+    - target: {fileID: 3262459945827898626, guid: 7584cc51528fa684ea861063874289ab, type: 3}
+      propertyPath: blocks
+      value: 
+      objectReference: {fileID: 1097308487}
     - target: {fileID: 4910241636444012569, guid: 7584cc51528fa684ea861063874289ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -683,6 +691,10 @@ PrefabInstance:
       propertyPath: board
       value: 
       objectReference: {fileID: 582989909}
+    - target: {fileID: 3262459945827898626, guid: 7584cc51528fa684ea861063874289ab, type: 3}
+      propertyPath: blocks
+      value: 
+      objectReference: {fileID: 1097308487}
     - target: {fileID: 4910241636444012569, guid: 7584cc51528fa684ea861063874289ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

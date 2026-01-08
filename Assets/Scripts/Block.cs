@@ -7,6 +7,7 @@ public class Block : MonoBehaviour
     private const int SIZE = 5;// Size of the block in cells (5x5)
     [SerializeField] private Cell cellPrefab;
     [SerializeField] private Board board;
+    [SerializeField] private Blocks blocks;
 
     int polyominoIndex = 1;
 
@@ -127,13 +128,12 @@ public class Block : MonoBehaviour
         if (board.Place(currentDragPoint, polyominoIndex))
         {
             Debug.Log("Block placed on board!");
-            Hide();
+            //Hide();
+            gameObject.SetActive(false);
+            blocks.Remove();
         }
-        else
-        {
-            Debug.Log("Block placement failed, returning to original position.");
-            transform.localPosition = originalPosition;
-            transform.localScale = scale;
-        }
+
+        transform.localPosition = originalPosition;
+        transform.localScale = scale;
     }
 }

@@ -6,6 +6,7 @@ public class Blocks : MonoBehaviour
 {
     [SerializeField] private Block[] blocks;
     [SerializeField] private Board board;
+    private int blockCount = 0;
 
     private void Start()
     {
@@ -25,7 +26,19 @@ public class Blocks : MonoBehaviour
     {
         for (int i = 0; i < blocks.Length; ++i)
         {
+            blocks[i].gameObject.SetActive(true);
             blocks[i].Show(0);
+            blockCount++;
+        }
+    }
+
+    public void Remove()
+    {
+        --blockCount;
+        if (blockCount <= 0)
+        {
+            blockCount = 0;
+            Generate();
         }
     }
 }
