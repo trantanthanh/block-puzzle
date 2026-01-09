@@ -1,5 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum CellState
+{
+    Empty = 0,
+    Hover = 1,
+    Normal = 2
+}
+
 // Manages the game board made up of cells (attach to Board GameObject)
 public class Board : MonoBehaviour
 {
@@ -12,7 +20,7 @@ public class Board : MonoBehaviour
     [SerializeField] private Cell cellPrefab;
     [SerializeField] private Transform cellsTransform;// Parent transform for cells
     private readonly Cell[,] cells = new Cell[SIZE, SIZE];// 2D array to hold cell references
-    private readonly int[,] data = new int[SIZE, SIZE];// 0 : Empty, 1 : Hover, 2 : Normal
+    private readonly CellState[,] data = new CellState[SIZE, SIZE];// CellState
 
     #region Manage Hover Points
     private readonly List<Vector2Int> hoverPoints = new();
@@ -60,7 +68,7 @@ public class Board : MonoBehaviour
             || point.x >= SIZE
             || point.y < 0
             || point.y >= SIZE
-            || data[point.y, point.x] > 0)
+            || data[point.y, point.x] != CellState.Empty)
         {
             return false;
         }
@@ -74,11 +82,13 @@ public class Board : MonoBehaviour
         int polyominoRows = polyomino.GetLength(0);
         int polyominoColumns = polyomino.GetLength(1);
 
-        UnHover();
+        UnHover();// Clear previous hover
+        UnHighlight();
         GetHoverPoints(point, polyominoRows, polyominoColumns, polyomino);
         if (hoverPoints.Count > 0)
         {
-            Hover();
+            Hover();// Show new hover
+            Highlight(point, polyominoColumns, polyominoRows);// Highlight full lines
         }
     }
 
@@ -86,7 +96,7 @@ public class Board : MonoBehaviour
     {
         foreach (var hoverPoint in hoverPoints)
         {
-            data[hoverPoint.y, hoverPoint.x] = 1;// Mark as hover
+            data[hoverPoint.y, hoverPoint.x] = CellState.Hover;
             cells[hoverPoint.y, hoverPoint.x].Hover();
         }
     }
@@ -95,12 +105,13 @@ public class Board : MonoBehaviour
     {
         foreach (var hoverPoint in hoverPoints)
         {
-            data[hoverPoint.y, hoverPoint.x] = 0;// Mark as empty
+            data[hoverPoint.y, hoverPoint.x] = CellState.Empty;
             cells[hoverPoint.y, hoverPoint.x].Hide();
         }
         hoverPoints.Clear();
     }
 
+    // Place a polyomino at a specific board point after mouse up
     public bool Place(Vector2Int point, int polyominoIndex)
     {
         var polyomino = Polyominoes.Get(polyominoIndex);
@@ -121,7 +132,7 @@ public class Board : MonoBehaviour
     {
         foreach (var hoverPoint in hoverPoints)
         {
-            data[hoverPoint.y, hoverPoint.x] = 2;// Mark as normal
+            data[hoverPoint.y, hoverPoint.x] = CellState.Normal;
             cells[hoverPoint.y, hoverPoint.x].Normal();
         }
         hoverPoints.Clear();
@@ -136,6 +147,7 @@ public class Board : MonoBehaviour
         ClearFullLines();
     }
 
+    //check full lines column in the given range
     private void FullLinesColumn(int fromColum, int toColumn)
     {
         fullLineColumns.Clear();
@@ -144,8 +156,9 @@ public class Board : MonoBehaviour
             bool isFull = true;
             for (int row = 0; row < SIZE; row++)
             {
-                if (data[row, column] != 2)
+                if (data[row, column] != CellState.Normal)
                 {
+                    //it's empty cell or hover cell found
                     isFull = false;
                     break;
                 }
@@ -157,6 +170,7 @@ public class Board : MonoBehaviour
         }
     }
 
+    //check full lines row in the given range
     private void FullLinesRow(int fromRow, int toRow)
     {
         fullLineRows.Clear();
@@ -165,8 +179,9 @@ public class Board : MonoBehaviour
             bool isFull = true;
             for (int column = 0; column < SIZE; column++)
             {
-                if (data[row, column] != 2)
+                if (data[row, column] != CellState.Normal)
                 {
+                    //it's empty cell or hover cell found
                     isFull = false;
                     break;
                 }
@@ -185,7 +200,7 @@ public class Board : MonoBehaviour
         {
             for (int column = 0; column < SIZE; column++)
             {
-                data[row, column] = 0;
+                data[row, column] = CellState.Empty;
                 cells[row, column].Hide();
             }
         }
@@ -194,8 +209,114 @@ public class Board : MonoBehaviour
         {
             for (int row = 0; row < SIZE; row++)
             {
-                data[row, column] = 0;
+                data[row, column] = CellState.Empty;
                 cells[row, column].Hide();
+            }
+        }
+    }
+
+    private void UnHighlight()
+    {
+        // Reset previously highlighted cells
+        foreach (var row in fullLineRows)
+        {
+            for (int column = 0; column < SIZE; column++)
+            {
+                if (data[row, column] == CellState.Normal)
+                {
+                    cells[row, column].Normal();
+                }
+            }
+        }
+
+        foreach (var column in fullLineColumns)
+        {
+            for (int row = 0; row < SIZE; row++)
+            {
+                if (data[row, column] == CellState.Normal)
+                {
+                    cells[row, column].Normal();
+                }
+
+            }
+        }
+    }
+
+    private void Highlight(Vector2Int point, int polyominoColumn, int polyominoRow)
+    {
+        PredictHighlightRow(point.y, point.y + polyominoRow);
+        PredictHighlightColumn(point.x, point.x + polyominoColumn);
+
+        HighlightLinesPredict();
+    }
+
+    private void HighlightLinesPredict()
+    {
+        foreach (var row in fullLineRows)
+        {
+            for (int column = 0; column < SIZE; column++)
+            {
+                if (data[row, column] == CellState.Normal)
+                {
+                    cells[row, column].Highlight();
+                }
+            }
+        }
+
+        foreach (var column in fullLineColumns)
+        {
+            for (int row = 0; row < SIZE; row++)
+            {
+                if (data[row, column] == CellState.Normal)
+                {
+                    cells[row, column].Highlight();
+                }
+            }
+        }
+    }
+
+    private void PredictHighlightColumn(int fromColum, int toColumn)
+    {
+        fullLineColumns.Clear();
+        for (int column = fromColum; column < toColumn; column++)
+        {
+            bool isFull = true;
+            for (int row = 0; row < SIZE; row++)
+            {
+                if (data[row, column] != CellState.Hover
+                    && data[row, column] != CellState.Normal)
+                {
+                    //it's empty cell found
+                    isFull = false;
+                    break;
+                }
+            }
+            if (isFull)
+            {
+                fullLineColumns.Add(column);
+            }
+        }
+    }
+
+    private void PredictHighlightRow(int fromRow, int toRow)
+    {
+        fullLineRows.Clear();
+        for (int row = fromRow; row < toRow; row++)
+        {
+            bool isFull = true;
+            for (int column = 0; column < SIZE; column++)
+            {
+                if (data[row, column] != CellState.Hover
+                    && data[row, column] != CellState.Normal)
+                {
+                    //it's empty cell
+                    isFull = false;
+                    break;
+                }
+            }
+            if (isFull)
+            {
+                fullLineRows.Add(row);
             }
         }
     }
