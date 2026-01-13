@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 // Manages multiple blocks and positions them on the board (attach to Blocks GameObject)
 public class Blocks : MonoBehaviour
@@ -27,7 +28,7 @@ public class Blocks : MonoBehaviour
         for (int i = 0; i < blocks.Length; ++i)
         {
             blocks[i].gameObject.SetActive(true);
-            blocks[i].Show(1);
+            blocks[i].Show(Random.Range(0, Polyominoes.Length));
             blockCount++;
         }
     }

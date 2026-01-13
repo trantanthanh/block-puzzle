@@ -3,27 +3,215 @@ public static class Polyominoes
 {
     private static readonly int[][,] polyominoes = new int[][,]
     {
+        //L shape
         new int [,]
         {
            {0, 0, 1},
            {0, 0, 1},
            {1, 1, 1}
-        }//L shape
+        }
+        ,
+         new int [,]
+        {
+           {1, 0, 0},
+           {1, 0, 0},
+           {1, 1, 1}
+        }
+        ,
+          new int [,]
+        {
+           {1, 1, 1},
+           {1, 0, 0},
+           {1, 0, 0}
+        }
+        ,
+           new int [,]
+        {
+           {1, 1, 1},
+           {0, 0, 1},
+           {0, 0, 1}
+        }
         ,
         new int [,]
         {
            {1, 1},
            {1, 1}
         }//square shape
+        ,
+        //line shape
+        new int [,]
+        {
+           {1, 1, 1, 1}
+        }
+        ,
+        new int [,]
+        {
+           {1},
+           {1},
+           {1},
+           {1}
+        }
+        ,
+        //T shape
+        new int [,]
+        {
+           {1, 1, 1},
+           {0, 1, 0},
+           {0, 1, 0}
+        }
+        ,
+        new int [,]
+        {
+           {0, 0, 1},
+           {1, 1, 1},
+           {0, 0, 1}
+        }
+        ,
+        new int [,]
+        {
+           {0, 1, 0},
+           {0, 1, 0},
+           {1, 1, 1}
+        }
+        ,
+        new int [,]
+        {
+           {1, 0, 0},
+           {1, 1, 1},
+           {1, 0, 0}
+        }
+        ,
+        //z shape
+        new int [,]
+        {
+           {0, 1, 1},
+           {1, 1, 0}
+        }
+        ,
+        new int [,]
+        {
+           {1, 1, 0},
+           {0, 1, 1}
+        }
+        ,
+        new int [,]
+        {
+           {0, 1},
+           {1, 1},
+           {1, 0},
+        }
+        ,
+         new int [,]
+        {
+           {1, 0},
+           {1, 1},
+           {0, 1},
+        }
+        ,
+         //J shape
+        new int [,]
+        {
+           {1, 1, 1},
+           {1, 0, 0}
+        }
+        ,
+        new int [,]
+        {
+           {1, 1, 1},
+           {0, 0, 1}
+        }
+        ,
+        new int [,]
+        {
+           {1, 1},
+           {1, 0},
+           {1, 0}
+        }
+        ,
+        new int [,]
+        {
+           {1, 1},
+           {0, 1},
+           {0, 1}
+        }
+        ,
+        new int [,]
+        {
+           {0, 1},
+           {0, 1},
+           {1, 1}
+        }
+        ,
+        new int [,]
+        {
+           {1, 0},
+           {1, 0},
+           {1, 1}
+        }
+        ,
+        new int [,]
+        {
+           {1}
+        }//single block
+        ,
+        new int [,]
+        {
+           {1, 1, 1},
+           {0, 1, 1}
+        }//P shape
+        ,
+        new int [,]
+        {
+           {1, 1, 0},
+           {1, 1, 1}
+        }//Q shape
+        ,
+        new int [,]
+        {
+           {1, 1},
+           {0, 1},
+        }
+        ,
+        new int [,]
+        {
+           {1, 1, 1},
+           {1, 0, 1},
+        }
+        ,
+        new int [,]
+        {
+           {1, 1, 1},
+           {0, 1, 0},
+        }
+        ,
+        new int [,]
+        {
+           {0, 1, 0},
+           {1, 1, 1},
+        }
+        ,
+        new int [,]
+        {
+           {0, 1},
+           {1, 1},
+           {0, 1}
+        }
+        ,
+        new int [,]
+        {
+           {1, 0},
+           {1, 1},
+           {1, 0}
+        }
     };//array of 2d arrays representing polyomino shapes
 
-    static Polyominoes()
-    {
-        foreach (var polyomino in polyominoes)
-        {
-            ReverseRows(polyomino);
-        }
-    }
+    //static Polyominoes()
+    //{
+    //    foreach (var polyomino in polyominoes)
+    //    {
+    //        ReverseRows(polyomino);
+    //    }
+    //}
 
     public static int[,] Get(int index) => polyominoes[index];
     public static int Length => polyominoes.Length;
