@@ -1,13 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CellState
-{
-    Empty = 0,
-    Hover = 1,
-    Normal = 2
-}
-
 // Manages the game board made up of cells (attach to Board GameObject)
 public class Board : MonoBehaviour
 {
@@ -24,6 +17,8 @@ public class Board : MonoBehaviour
 
     #region Manage Hover Points
     private readonly List<Vector2Int> hoverPoints = new();
+    private readonly List<int> highlightPolymominoColums = new();
+    private readonly List<int> highlightPolymominoRows = new();
     private readonly List<int> fullLineColumns = new();
     private readonly List<int> fullLineRows = new();
     #endregion
@@ -84,11 +79,25 @@ public class Board : MonoBehaviour
 
         UnHover();// Clear previous hover
         UnHighlight();
+        highlightPolymominoColums.Clear();
+        highlightPolymominoRows.Clear();
+        
         GetHoverPoints(point, polyominoRows, polyominoColumns, polyomino);
+
         if (hoverPoints.Count > 0)
         {
             Hover();// Show new hover
             Highlight(point, polyominoColumns, polyominoRows);// Highlight full lines
+
+            foreach (var column in fullLineColumns)
+            {
+                highlightPolymominoColums.Add(column - point.x);
+            }
+
+            foreach (var row in fullLineRows)
+            {
+                highlightPolymominoRows.Add(row - point.y);
+            }
         }
     }
 
@@ -321,61 +330,6 @@ public class Board : MonoBehaviour
         }
     }
 
-    //private void ClearFullLines()
-    //{
-    //    fullLineRows.Clear();
-    //    fullLineColumns.Clear();
-    //    // Check for full rows
-    //    for (int row = 0; row < SIZE; row++)
-    //    {
-    //        bool isFull = true;
-    //        for (int column = 0; column < SIZE; column++)
-    //        {
-    //            if (data[row, column] != 2)
-    //            {
-    //                isFull = false;
-    //                break;
-    //            }
-    //        }
-    //        if (isFull)
-    //        {
-    //            fullLineRows.Add(row);
-    //        }
-    //    }
-    //    // Check for full columns
-    //    for (int column = 0; column < SIZE; column++)
-    //    {
-    //        bool isFull = true;
-    //        for (int row = 0; row < SIZE; row++)
-    //        {
-    //            if (data[row, column] != 2)
-    //            {
-    //                isFull = false;
-    //                break;
-    //            }
-    //        }
-    //        if (isFull)
-    //        {
-    //            fullLineColumns.Add(column);
-    //        }
-    //    }
-    //    // Clear full rows
-    //    foreach (var row in fullLineRows)
-    //    {
-    //        for (int column = 0; column < SIZE; column++)
-    //        {
-    //            data[row, column] = 0;
-    //            cells[row, column].Hide();
-    //        }
-    //    }
-    //    // Clear full columns
-    //    foreach (var column in fullLineColumns)
-    //    {
-    //        for (int row = 0; row < SIZE; row++)
-    //        {
-    //            data[row, column] = 0;
-    //            cells[row, column].Hide();
-    //        }
-    //    }
-    //}
+    public List<int> HightlightPoloymominoColums => highlightPolymominoColums;
+    public List<int> HightlightPoloymominoRows => highlightPolymominoRows;
 }

@@ -1,3 +1,6 @@
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.GameCenter;
 
@@ -116,6 +119,7 @@ public class Block : MonoBehaviour
                 Debug.Log($"Current Drag Point: {currentDragPoint}");
                 previousDragPoint = currentDragPoint;
                 board.Hover(currentDragPoint, polyominoIndex);
+                Highlight(board.HightlightPoloymominoColums, board.HightlightPoloymominoRows);
             }
         }
     }
@@ -135,5 +139,58 @@ public class Block : MonoBehaviour
 
         transform.localPosition = originalPosition;
         transform.localScale = scale;
+    }
+
+    private void Highlight(List<int> columns, List<int> rows)
+    {
+        var polyomino = Polyominoes.Get(polyominoIndex);
+        var polyominoRows = polyomino.GetLength(0);// number of rows in the polyomino
+        var polyominoColumns = polyomino.GetLength(1);// number of columns in the polyomino
+
+        Unhighlight(polyominoColumns, polyominoRows, polyomino);
+        HighlightBlockColumn(polyominoRows, polyomino, columns);
+        HighlightBlockRow(polyominoColumns, polyomino, rows);
+    }
+
+    private void HighlightBlockRow(int polyominoColumns, int[,] polyomino, List<int> rows)
+    {
+        foreach (var row in rows)
+        {
+            for (int column = 0; column < polyominoColumns; ++column)
+            {
+                if (polyomino[row, column] > 0)
+                {
+                    cells[row, column].Highlight();
+                }
+            }
+        }
+    }
+
+    private void HighlightBlockColumn(int polyominoRows, int[,] polyomino, List<int> columns)
+    {
+        foreach (var column in columns)
+        {
+            for (int row = 0; row < polyominoRows; ++row)
+            {
+                if (polyomino[row, column] > 0)
+                {
+                    cells[row, column].Highlight();
+                }
+            }
+        }
+    }
+
+    private void Unhighlight(int polyominoColumns, int polyominoRows, int[,] polyomino)
+    {
+        for (int row = 0; row < polyominoRows; ++row)
+        {
+            for (int column = 0; column < polyominoColumns; ++column)
+            {
+                if (polyomino[row, column] > 0)
+                {
+                    cells[row, column].Normal();
+                }
+            }
+        }
     }
 }
