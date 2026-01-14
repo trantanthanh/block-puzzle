@@ -21,6 +21,9 @@ public class Board : MonoBehaviour
     private readonly List<int> highlightPolymominoRows = new();
     private readonly List<int> fullLineColumns = new();
     private readonly List<int> fullLineRows = new();
+
+    private Vector2Int previousHoverPoint;
+    private readonly List<Vector2Int> previousHoverPoints = new();
     #endregion
 
     private void Start()
@@ -86,21 +89,26 @@ public class Board : MonoBehaviour
 
         if (hoverPoints.Count > 0)
         {
+            previousHoverPoint = point;
+            previousHoverPoints.Clear();
+            previousHoverPoints.AddRange(hoverPoints);
             Hover();// Show new hover
             Highlight(point, polyominoColumns, polyominoRows);// Highlight full lines
+        }
+        else if (previousHoverPoints.Count > 0 && Mathf.Abs(point.x - previousHoverPoint.x) < 2)
+        {
+            point = previousHoverPoint;
+            hoverPoints.Clear();
+            hoverPoints.AddRange(previousHoverPoints);
 
-            foreach (var column in fullLineColumns)
-            {
-                highlightPolymominoColums.Add(column - point.x);
-            }
-
-            foreach (var row in fullLineRows)
-            {
-                highlightPolymominoRows.Add(row - point.y);
-            }
+            Hover();// Show new hover
+            Highlight(point, polyominoColumns, polyominoRows);// Highlight full lines
+        }
+        else
+        {
+            previousHoverPoints.Clear();
         }
     }
-
     private void Hover()
     {
         foreach (var hoverPoint in hoverPoints)
@@ -132,6 +140,16 @@ public class Board : MonoBehaviour
         if (hoverPoints.Count > 0)
         {
             Place(point, polyominoRows, polyominoColumns);
+            previousHoverPoints.Clear();
+            return true;
+        }
+        else if (previousHoverPoints.Count > 0 && Mathf.Abs(point.x - previousHoverPoint.x) < 2)
+        {
+            point = previousHoverPoint;
+            hoverPoints.Clear();
+            hoverPoints.AddRange(previousHoverPoints);
+            Place(point, polyominoRows, polyominoColumns);
+            previousHoverPoints.Clear();
             return true;
         }
         return false;
@@ -257,6 +275,16 @@ public class Board : MonoBehaviour
         PredictHighlightColumn(point.x, point.x + polyominoColumn);
 
         HighlightLinesPredict();
+
+        foreach (var column in fullLineColumns)
+        {
+            highlightPolymominoColums.Add(column - point.x);
+        }
+
+        foreach (var row in fullLineRows)
+        {
+            highlightPolymominoRows.Add(row - point.y);
+        }
     }
 
     private void HighlightLinesPredict()
