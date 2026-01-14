@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SocialPlatforms.GameCenter;
 
 // Manages a block of cells that can display different polyomino shapes (attach to block prefab)
@@ -28,6 +29,7 @@ public class Block : MonoBehaviour
     private Vector2Int previousDragPoint;
     private Vector2Int currentDragPoint;//use to caculate position on board
     private Vector2 center;
+    private SortingGroup sortingGroup;
 
     [Header("Config")]
     [SerializeField] private Vector3 inputOffset = new Vector3(0.0f, 2.0f, 0.0f);
@@ -40,6 +42,7 @@ public class Block : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
+        sortingGroup = GetComponent<SortingGroup>();
     }
 
     public void Initialize()
@@ -96,6 +99,9 @@ public class Block : MonoBehaviour
         transform.localPosition = originalPosition + inputOffset;
         transform.localScale = Vector3.one;
         previousMousePosition = Input.mousePosition;
+
+        blocks.ResetSortingOrder();
+        SetSortingOrder(1);//bring to front
 
         currentDragPoint = Vector2Int.RoundToInt((Vector2)transform.position - center);
         previousDragPoint = currentDragPoint;
@@ -192,5 +198,10 @@ public class Block : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetSortingOrder(int order)
+    {
+        sortingGroup.sortingOrder = order;
     }
 }

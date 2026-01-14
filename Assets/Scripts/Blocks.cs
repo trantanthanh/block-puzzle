@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 // Manages multiple blocks and positions them on the board (attach to Blocks GameObject)
@@ -61,6 +62,14 @@ public class Blocks : MonoBehaviour
         if (lose)
         {
             Debug.Log("Game Over!");
+        }
+    }
+
+    public void ResetSortingOrder()
+    {
+        foreach (var block in blocks)
+        {
+            block.SetSortingOrder(0);
         }
     }
 }

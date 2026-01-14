@@ -217,6 +217,20 @@ public static class Polyominoes
            {1, 1},
            {1, 0}
         }
+        ,
+        new int [,]
+        {
+           {1, 0, 0},
+           {0, 1, 0},
+           {0, 0, 1}
+        }
+        ,
+        new int [,]
+        {
+           {0, 0, 1},
+           {0, 1, 0},
+           {1, 0, 0}
+        }
     };//array of 2d arrays representing polyomino shapes
 
     //static Polyominoes()

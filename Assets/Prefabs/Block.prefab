@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4910241636444012569}
   - component: {fileID: 3262459945827898626}
   - component: {fileID: 8408479769484700043}
+  - component: {fileID: 4634392603824070773}
   m_Layer: 0
   m_Name: Block
   m_TagString: Untagged
@@ -47,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Block
   cellPrefab: {fileID: 2510950775250347912, guid: 417fff8da7c41ad43bbec0360338c7db, type: 3}
   board: {fileID: 0}
-  polyominoIndex: 0
+  blocks: {fileID: 0}
   inputOffset: {x: 0, y: 2, z: 0}
 --- !u!61 &8408479769484700043
 BoxCollider2D:
@@ -95,3 +96,15 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5, y: 5}
   m_EdgeRadius: 0
+--- !u!210 &4634392603824070773
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6060026952912681816}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
