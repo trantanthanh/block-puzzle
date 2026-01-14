@@ -8,6 +8,7 @@ public class Blocks : MonoBehaviour
     [SerializeField] private Block[] blocks;
     [SerializeField] private Board board;
     private int blockCount = 0;
+    private int[] polyominoIndexes;
 
     private void Start()
     {
@@ -20,6 +21,8 @@ public class Blocks : MonoBehaviour
             blocks[i].Initialize();
         }
 
+        polyominoIndexes = new int[blocks.Length];
+
         Generate();
     }
 
@@ -27,8 +30,9 @@ public class Blocks : MonoBehaviour
     {
         for (int i = 0; i < blocks.Length; ++i)
         {
+            polyominoIndexes[i] = Random.Range(0, Polyominoes.Length);
             blocks[i].gameObject.SetActive(true);
-            blocks[i].Show(Random.Range(0, Polyominoes.Length));
+            blocks[i].Show(polyominoIndexes[i]);
             blockCount++;
         }
     }
@@ -40,6 +44,23 @@ public class Blocks : MonoBehaviour
         {
             blockCount = 0;
             Generate();
+        }
+
+        var lose = true;
+        for (var i = 0; i < blocks.Length; i++)
+        {
+            if (blocks[i].gameObject.activeSelf)
+            {
+                if (board.CheckPlace(polyominoIndexes[i]))
+                {
+                    lose = false;
+                    break;
+                }
+            }
+        }
+        if (lose)
+        {
+            Debug.Log("Game Over!");
         }
     }
 }

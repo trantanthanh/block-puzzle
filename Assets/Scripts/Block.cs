@@ -108,7 +108,7 @@ public class Block : MonoBehaviour
         var currentMousePosition = Input.mousePosition;
         if (previousMousePosition != currentMousePosition)
         {
-            Debug.Log("Block dragged!");
+            //Debug.Log("Block dragged!");
             previousMousePosition = currentMousePosition;
             var inputDelta = mainCamera.ScreenToWorldPoint(currentMousePosition) - inputPoint;
             transform.localPosition = originalPosition + inputOffset + inputDelta * inputPointMultiple;
@@ -116,7 +116,7 @@ public class Block : MonoBehaviour
             currentDragPoint = Vector2Int.RoundToInt((Vector2)transform.position - center);//update drag point
             if (currentDragPoint != previousDragPoint)
             {
-                Debug.Log($"Current Drag Point: {currentDragPoint}");
+                //Debug.Log($"Current Drag Point: {currentDragPoint}");
                 previousDragPoint = currentDragPoint;
                 board.Hover(currentDragPoint, polyominoIndex);
                 Highlight(board.HightlightPoloymominoColums, board.HightlightPoloymominoRows);
@@ -125,13 +125,13 @@ public class Block : MonoBehaviour
     }
     void OnMouseUp()
     {
-        Debug.Log("Block released!");
+        //Debug.Log("Block released!");
         previousMousePosition = Vector3.positiveInfinity;
 
         currentDragPoint = Vector2Int.RoundToInt((Vector2)transform.position - center);
         if (board.Place(currentDragPoint, polyominoIndex))
         {
-            Debug.Log("Block placed on board!");
+            //Debug.Log("Block placed on board!");
             //Hide();
             gameObject.SetActive(false);
             blocks.Remove();

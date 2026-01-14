@@ -81,7 +81,7 @@ public class Board : MonoBehaviour
         UnHighlight();
         highlightPolymominoColums.Clear();
         highlightPolymominoRows.Clear();
-        
+
         GetHoverPoints(point, polyominoRows, polyominoColumns, polyomino);
 
         if (hoverPoints.Count > 0)
@@ -328,6 +328,40 @@ public class Board : MonoBehaviour
                 fullLineRows.Add(row);
             }
         }
+    }
+
+    public bool CheckPlace(int polyominoIndex)
+    {
+        var polyomino = Polyominoes.Get(polyominoIndex);
+        var polyominoRows = polyomino.GetLength(0);
+        var polyominoColumns = polyomino.GetLength(1);
+
+        for (int row = 0; row < SIZE - polyominoRows; ++row)
+        {
+            for (int column = 0; column < SIZE - polyominoColumns; ++column)
+            {
+                if (CanPlace(column, row, polyominoColumns, polyominoRows, polyomino))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private bool CanPlace(int column, int row, int polyominoColumns, int polyominoRows, int[,] polyomino)
+    {
+        for (int r = 0; r < polyominoRows; ++r)
+        {
+            for (int c = 0; c < polyominoColumns; ++c)
+            {
+                if (polyomino[r, c] > 0 && data[row + r, column + c] == CellState.Normal)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public List<int> HightlightPoloymominoColums => highlightPolymominoColums;

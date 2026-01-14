@@ -52,6 +52,20 @@ public static class Polyominoes
            {1}
         }
         ,
+        new int [,]
+        {
+           {1, 1},
+           {1, 1},
+           {1, 1},
+           {1, 1}
+        }
+        ,
+        new int [,]
+        {
+           {1, 1, 1, 1},
+           {1, 1, 1, 1},
+        }
+        ,
         //T shape
         new int [,]
         {
