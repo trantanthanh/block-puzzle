@@ -7,14 +7,14 @@ using UnityEngine.SocialPlatforms.GameCenter;
 // Manages a block of cells that can display different polyomino shapes (attach to block prefab)
 public class Block : MonoBehaviour
 {
-    private const int SIZE = 5;// Size of the block in cells (5x5)
+    private const int BLOCK_SIZE = 5;// Size of the block in cells (5x5)
     [SerializeField] private Cell cellPrefab;
     [SerializeField] private Board board;
     [SerializeField] private Blocks blocks;
 
     int polyominoIndex = 1;
 
-    private readonly Cell[,] cells = new Cell[SIZE, SIZE];
+    private readonly Cell[,] cells = new Cell[BLOCK_SIZE, BLOCK_SIZE];
     private Vector3 previousMousePosition = Vector3.positiveInfinity;
 
     private Vector3 originalPosition;//use to reset position on release
@@ -34,7 +34,7 @@ public class Block : MonoBehaviour
 
     public int Size
     {
-        get => SIZE;
+        get => BLOCK_SIZE;
     }
 
     private void Awake()
@@ -44,9 +44,9 @@ public class Block : MonoBehaviour
 
     public void Initialize()
     {
-        for (int row = 0; row < SIZE; ++row)
+        for (int row = 0; row < BLOCK_SIZE; ++row)
         {
-            for (int column = 0; column < SIZE; ++column)
+            for (int column = 0; column < BLOCK_SIZE; ++column)
             {
                 cells[row, column] = Instantiate(cellPrefab, transform);
             }
@@ -80,9 +80,9 @@ public class Block : MonoBehaviour
 
     private void Hide()
     {
-        for (int row = 0; row < SIZE; ++row)
+        for (int row = 0; row < BLOCK_SIZE; ++row)
         {
-            for (int column = 0; column < SIZE; ++column)
+            for (int column = 0; column < BLOCK_SIZE; ++column)
             {
                 cells[row, column].Hide();
             }
@@ -100,7 +100,7 @@ public class Block : MonoBehaviour
         currentDragPoint = Vector2Int.RoundToInt((Vector2)transform.position - center);
         previousDragPoint = currentDragPoint;
         board.Hover(currentDragPoint, polyominoIndex);
-        Debug.Log($"Current Drag Point: {currentDragPoint}");
+        //Debug.Log($"Current Drag Point: {currentDragPoint}");
     }
 
     void OnMouseDrag()

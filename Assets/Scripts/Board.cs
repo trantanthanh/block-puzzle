@@ -4,16 +4,16 @@ using UnityEngine;
 // Manages the game board made up of cells (attach to Board GameObject)
 public class Board : MonoBehaviour
 {
-    private const int SIZE = 8;
+    private const int BOARD_SIZE = 8;
     public int Size
     {
-        get => SIZE;
+        get => BOARD_SIZE;
     }
 
     [SerializeField] private Cell cellPrefab;
     [SerializeField] private Transform cellsTransform;// Parent transform for cells
-    private readonly Cell[,] cells = new Cell[SIZE, SIZE];// 2D array to hold cell references
-    private readonly CellState[,] data = new CellState[SIZE, SIZE];// CellState
+    private readonly Cell[,] cells = new Cell[BOARD_SIZE, BOARD_SIZE];// 2D array to hold cell references
+    private readonly CellState[,] data = new CellState[BOARD_SIZE, BOARD_SIZE];// CellState
 
     #region Manage Hover Points
     private readonly List<Vector2Int> hoverPoints = new();
@@ -25,9 +25,9 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
-        for (int row = 0; row < SIZE; row++)
+        for (int row = 0; row < BOARD_SIZE; row++)
         {
-            for (int column = 0; column < SIZE; column++)
+            for (int column = 0; column < BOARD_SIZE; column++)
             {
                 cells[row, column] = Instantiate(cellPrefab, cellsTransform);
                 //cells[row, column].SetColor(Color.blue);
@@ -60,9 +60,9 @@ public class Board : MonoBehaviour
     private bool IsValidHover(Vector2Int point)
     {
         if (point.x < 0
-            || point.x >= SIZE
+            || point.x >= BOARD_SIZE
             || point.y < 0
-            || point.y >= SIZE
+            || point.y >= BOARD_SIZE
             || data[point.y, point.x] != CellState.Empty)
         {
             return false;
@@ -163,7 +163,7 @@ public class Board : MonoBehaviour
         for (int column = fromColum; column < toColumn; column++)
         {
             bool isFull = true;
-            for (int row = 0; row < SIZE; row++)
+            for (int row = 0; row < BOARD_SIZE; row++)
             {
                 if (data[row, column] != CellState.Normal)
                 {
@@ -186,7 +186,7 @@ public class Board : MonoBehaviour
         for (int row = fromRow; row < toRow; row++)
         {
             bool isFull = true;
-            for (int column = 0; column < SIZE; column++)
+            for (int column = 0; column < BOARD_SIZE; column++)
             {
                 if (data[row, column] != CellState.Normal)
                 {
@@ -207,7 +207,7 @@ public class Board : MonoBehaviour
         //Clear full rows
         foreach (var row in fullLineRows)
         {
-            for (int column = 0; column < SIZE; column++)
+            for (int column = 0; column < BOARD_SIZE; column++)
             {
                 data[row, column] = CellState.Empty;
                 cells[row, column].Hide();
@@ -216,7 +216,7 @@ public class Board : MonoBehaviour
         // Clear full columns
         foreach (var column in fullLineColumns)
         {
-            for (int row = 0; row < SIZE; row++)
+            for (int row = 0; row < BOARD_SIZE; row++)
             {
                 data[row, column] = CellState.Empty;
                 cells[row, column].Hide();
@@ -229,7 +229,7 @@ public class Board : MonoBehaviour
         // Reset previously highlighted cells
         foreach (var row in fullLineRows)
         {
-            for (int column = 0; column < SIZE; column++)
+            for (int column = 0; column < BOARD_SIZE; column++)
             {
                 if (data[row, column] == CellState.Normal)
                 {
@@ -240,7 +240,7 @@ public class Board : MonoBehaviour
 
         foreach (var column in fullLineColumns)
         {
-            for (int row = 0; row < SIZE; row++)
+            for (int row = 0; row < BOARD_SIZE; row++)
             {
                 if (data[row, column] == CellState.Normal)
                 {
@@ -263,7 +263,7 @@ public class Board : MonoBehaviour
     {
         foreach (var row in fullLineRows)
         {
-            for (int column = 0; column < SIZE; column++)
+            for (int column = 0; column < BOARD_SIZE; column++)
             {
                 if (data[row, column] == CellState.Normal)
                 {
@@ -274,7 +274,7 @@ public class Board : MonoBehaviour
 
         foreach (var column in fullLineColumns)
         {
-            for (int row = 0; row < SIZE; row++)
+            for (int row = 0; row < BOARD_SIZE; row++)
             {
                 if (data[row, column] == CellState.Normal)
                 {
@@ -290,7 +290,7 @@ public class Board : MonoBehaviour
         for (int column = fromColum; column < toColumn; column++)
         {
             bool isFull = true;
-            for (int row = 0; row < SIZE; row++)
+            for (int row = 0; row < BOARD_SIZE; row++)
             {
                 if (data[row, column] != CellState.Hover
                     && data[row, column] != CellState.Normal)
@@ -313,7 +313,7 @@ public class Board : MonoBehaviour
         for (int row = fromRow; row < toRow; row++)
         {
             bool isFull = true;
-            for (int column = 0; column < SIZE; column++)
+            for (int column = 0; column < BOARD_SIZE; column++)
             {
                 if (data[row, column] != CellState.Hover
                     && data[row, column] != CellState.Normal)
@@ -336,9 +336,9 @@ public class Board : MonoBehaviour
         var polyominoRows = polyomino.GetLength(0);
         var polyominoColumns = polyomino.GetLength(1);
 
-        for (int row = 0; row < SIZE - polyominoRows; ++row)
+        for (int row = 0; row < BOARD_SIZE - polyominoRows; ++row)
         {
-            for (int column = 0; column < SIZE - polyominoColumns; ++column)
+            for (int column = 0; column < BOARD_SIZE - polyominoColumns; ++column)
             {
                 if (CanPlace(column, row, polyominoColumns, polyominoRows, polyomino))
                 {
